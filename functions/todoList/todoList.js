@@ -7,8 +7,8 @@ const typeDefs = gql`
     todos: [Todo!]    
   }
   type Mutation {
-    addTodo(task: String!) : Todo
-  }
+    addTodo(task: String!) : Todo    
+  }  
   type Todo {
     id: ID!
     task: String!
@@ -19,7 +19,7 @@ const resolvers = {
   Query: {
     todos: async (root, args, context) => {
       try {
-        var adminClient = new faunadb.Client({ secret: 'fnAD64V80eACBf5PomRqV0kqdSj87jzBFDYOP3PE' });
+        var adminClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
 
         const result = await adminClient.query(
           q.Map(
@@ -39,17 +39,12 @@ const resolvers = {
       catch (err) {
         console.log(err)
       }
-    }
-
-    // authorByName: (root, args) => {
-    //   console.log('hihhihi', args.name)
-    //   return authors.find((author) => author.name === args.name) || 'NOTFOUND'
-    // },
+    }    
   },
   Mutation: {
     addTodo: async (_, { task }) => {
       try {
-        var adminClient = new faunadb.Client({ secret: 'fnAD64V80eACBf5PomRqV0kqdSj87jzBFDYOP3PE' });
+        var adminClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
         const result = await adminClient.query(
           q.Create(
             q.Collection('todos'),
@@ -67,8 +62,9 @@ const resolvers = {
         console.log(err)
       }
     }
-  }
+  },  
 }
+
 
 const server = new ApolloServer({
   typeDefs,

@@ -14,7 +14,7 @@ const GET_TODOS = gql`
 }
 `;
 
-
+// This query is for addition of new task
 const ADD_TODO = gql`
     mutation addTodo($task: String!){
         addTodo(task: $task){
@@ -22,7 +22,6 @@ const ADD_TODO = gql`
         }
     }
 `
-
 export default function Home() {
     let inputText;
 
@@ -38,7 +37,6 @@ export default function Home() {
     }
 
     const { loading, error, data } = useQuery(GET_TODOS);
-
     if (loading)
         return <h2>Loading..</h2>
 
@@ -51,36 +49,39 @@ export default function Home() {
         <div className="container">
             <label>
                 <h1> Add Task </h1> 
-                <input type="text" ref={node => {
-                    inputText = node;
-                }} />
+                <input type="text" 
+                       ref={node => {inputText = node;} } 
+                       placeholder="Add task"
+                
+                />
             </label>
-            <button onClick={addTask}>Add Task</button>
+            <button onClick={addTask}> + </button>
 
             <br /> <br />
 
-            <h3>My TODO LIST</h3>
+            <h2>TODO LIST</h2>          
 
-            <table border="2">
+            <table border="3">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th> TASK </th>
-                        <th> STATUS </th>
+                        <th> STATUS </th>                        
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="table-body">
                     {data.todos.map(todo => {                        
                         return <tr key={todo.id}>
                             <td> {todo.id} </td>
                             <td> {todo.task} </td>
-                            <td> {todo.status.toString()} </td>
+                            <td> {todo.status.toString()} </td>                            
                         </tr>
                     })}
                 </tbody>
             </table>
-          <h2>My TODOS</h2>
-          {JSON.stringify(data.todos)}
+
+          {/* <h2>My TODOS</h2>
+          {JSON.stringify(data.todos)} */}
         </div>
     );
 

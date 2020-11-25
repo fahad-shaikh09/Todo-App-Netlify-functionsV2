@@ -6,7 +6,7 @@ import "./style.css";
 // This query is executed at run time by Apollo.
 const GET_TODOS = gql`
 {
-    todos {
+    todosashraf {
         id,
         task,        
         status
@@ -26,7 +26,7 @@ const ADD_TODO = gql`
 const DELETE_TODOS = gql`
   mutation delTask($id: ID!) {
     delTask(id: $id) {
-      task
+      id
     }
   }
 `
@@ -41,7 +41,7 @@ export default function Home() {
         return <h2>Loading..</h2>
 
     if (error) {
-        console.log(error)
+        console.log("error>>>>>>>",error)
         return <h2>Error</h2>
     }
 
@@ -56,10 +56,10 @@ export default function Home() {
     }
 
     const handleDelete = event => {
-        console.log(event.currentTarget.value)
+        console.log("handleDelete's ID: ", event.target.value)
         deleteTodo({
           variables: {
-            id: event.currentTarget.value,
+            id: event.target.value,
           },
           refetchQueries: [{ query: GET_TODOS }],
         })
@@ -91,12 +91,12 @@ export default function Home() {
                     </tr>
                 </thead>
                 <tbody className="table-body">
-                    {data.todos.map(todo => {                        
+                    {data.todosashraf.map(todo => {                        
                         return <tr key={todo.id}>
                             <td> {todo.id} </td>
                             <td> {todo.task} </td>
                             <td> {todo.status.toString()} </td>  
-                            <td><button value={todo.id} onClick={handleDelete}>x</button></td>                          
+                            <td><button value={todo.id} onClick={event => handleDelete(event)}>x</button></td>                          
                         </tr>
                     })}
                 </tbody>

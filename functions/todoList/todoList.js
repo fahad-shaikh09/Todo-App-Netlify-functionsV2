@@ -7,7 +7,7 @@ require("dotenv").config();
 // The following are the "Schema" definition
 const typeDefs = gql`
   type Query {
-    todos: [Todo!]    
+    todosashraf: [Todo!]    
   }
   type Mutation {
     addTodo(task: String!): Todo   
@@ -26,9 +26,9 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    todos: async (root, args, context) => {
+    todosashraf: async (root, args, context) => {
       try {
-        var adminClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
+        var adminClient = new faunadb.Client({ secret: "fnAD7e55BbACAEsCKlLpH9oM1kSN77FzDCQ-0Utr" });
 
         const result = await adminClient.query(
           q.Map(
@@ -53,10 +53,10 @@ const resolvers = {
   Mutation: {
     addTodo: async (_, { task }) => {
       try {
-        var adminClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
+        var adminClient = new faunadb.Client({ secret: "fnAD7e55BbACAEsCKlLpH9oM1kSN77FzDCQ-0Utr" });
         const result = await adminClient.query(
           q.Create(
-            q.Collection('todos'),
+            q.Collection('todosashraf'),
             {
               data: {
                 task: task,
@@ -73,16 +73,14 @@ const resolvers = {
     },
     delTask: async (_, { id }) => {
       try {
-        var adminClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
+        var adminClient = new faunadb.Client({ secret: "fnAD7e55BbACAEsCKlLpH9oM1kSN77FzDCQ-0Utr" });
         const newId = JSON.stringify(id)
-        console.log(newId)
+        console.log("ID in DelTask Mutation************", newId)
         const result = await adminClient.query(        
-          q.Delete(q.Ref(q.Collection("todos"), id))
+          q.Delete(q.Ref(q.Collection("todosashraf"), newId))
         )
         return result.data
-      } catch (error) {
-        return error
-      }
+      } catch(error) {console.log(error)}
     }
   }
 }

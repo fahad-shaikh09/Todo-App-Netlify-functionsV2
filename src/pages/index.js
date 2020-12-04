@@ -26,7 +26,7 @@ const ADD_TODO = gql`
 const DELETE_TODOS = gql`
   mutation delTask($id: ID!) {
     delTask(id: $id) {
-      id
+      task
     }
   }
 `
@@ -55,11 +55,11 @@ export default function Home() {
         inputText.value = "";
     }
 
-    const handleDelete = event => {
-        console.log("handleDelete's ID: ", event.target.value)
+    const handleDelete = id => {
+        // console.log("handleDelete's ID: ", JSON.stringify(id))
         deleteTodo({
           variables: {
-            id: event.target.value,
+            id: id,
           },
           refetchQueries: [{ query: GET_TODOS }],
         })
@@ -96,7 +96,7 @@ export default function Home() {
                             <td> {todo.id} </td>
                             <td> {todo.task} </td>
                             <td> {todo.status.toString()} </td>  
-                            <td><button value={todo.id} onClick={event => handleDelete(event)}>x</button></td>                          
+                            <td><button value={todo.id} onClick={() => handleDelete(todo.id)}>x</button></td>                          
                         </tr>
                     })}
                 </tbody>

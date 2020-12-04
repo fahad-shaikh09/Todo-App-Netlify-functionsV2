@@ -39,7 +39,7 @@ const resolvers = {
         console.log("Result", result.data)
         return result.data.map(d => {
           return {
-            id: d.ts,
+            id: d.ref.id,
             status: d.data.status,
             task: d.data.task
           }
@@ -74,11 +74,15 @@ const resolvers = {
     delTask: async (_, { id }) => {
       try {
         var adminClient = new faunadb.Client({ secret: "fnAD7e55BbACAEsCKlLpH9oM1kSN77FzDCQ-0Utr" });
-        const newId = JSON.stringify(id)
-        console.log("ID in DelTask Mutation************", newId)
+        // const newId = JSON.stringify(id)
+        // console.log("ts ID in DelTask Mutation************", newId)
+        console.log("ts ID in DelTask Mutation************", id)
+
+        
         const result = await adminClient.query(        
-          q.Delete(q.Ref(q.Collection("todosashraf"), newId))
-        )
+          q.Delete(q.Ref(q.Collection("todosashraf"), id))
+          )
+          console.log("result.ref.id in DelTask Mutation************", result.ref.id)
         return result.data
       } catch(error) {console.log(error)}
     }
